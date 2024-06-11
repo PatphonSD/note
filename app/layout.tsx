@@ -75,9 +75,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
-        <link rel="manifest" href="manifest.json" />
-      </Head>
       <body
         className={cn(inter.className, "h-dvh flex flex-col overflow-auto")}
       >
