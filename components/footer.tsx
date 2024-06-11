@@ -1,4 +1,3 @@
-import { HelpCircle, MailQuestion } from "lucide-react";
 import Container from "./container";
 
 export default function Footer() {
@@ -7,9 +6,9 @@ export default function Footer() {
       <Container>
         <div className="p-2 border-t text-muted-foreground flex justify-between">
           <small className="text-xs" suppressHydrationWarning>
-            ©{new Date().getFullYear()}. PatphonSD
+            ©{new Date().getFullYear()}.
           </small>
-          <HelpCircle className="w-4 h-4" />
+          <small className="text-xs">PatphonSD</small>
         </div>
       </Container>
     </footer>
