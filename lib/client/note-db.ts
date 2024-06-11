@@ -16,7 +16,11 @@ export const addNote = async (note: INote): Promise<void> => {
 export const getNotes = async (): Promise<INote[]> => {
   const db = await dbPromise;
   const notes = await db.getAll('notes');
-  return notes.sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime());
+  return notes.sort((a, b) => {
+    const dateA = new Date(a.updatedAt);
+    const dateB = new Date(b.updatedAt);
+    return dateB.getTime() - dateA.getTime();
+  });
 };
 
 export const getNote = async (id: string): Promise<INote | undefined> => {
@@ -24,9 +28,9 @@ export const getNote = async (id: string): Promise<INote | undefined> => {
   return db.get('notes', id);
 };
 
-export const updateNote = async (key : string | undefined , note: INote): Promise<void> => {
+export const updateNote = async (key: string | undefined, note: INote): Promise<void> => {
   const db = await dbPromise;
-  await db.put('notes', note , key);
+  await db.put('notes', note, key);
 };
 
 export const deleteNote = async (id: string): Promise<void> => {
