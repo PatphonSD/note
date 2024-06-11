@@ -8,6 +8,7 @@ import { LoadingAllNotesSkeleton } from "./loading/loading-all-notes";
 import Container from "./container";
 import NoteItem from "./note-item";
 import NoteItemViewer from "./note-item-viewer";
+import { Ghost } from "lucide-react";
 
 export default function ListNotes() {
   const [notes, setNotes] = useAtom(notesAtom);
@@ -30,6 +31,12 @@ export default function ListNotes() {
         {notes?.map((item) => (
           <NoteItem key={item.id} {...item} />
         ))}
+        {notes?.length === 0 && (
+          <div className="flex-1 flex text-foreground/75 py-16 flex-col items-center justify-center col-span-full">
+            <Ghost />
+            <p>No notes found</p>
+          </div>
+        )}
         <NoteItemViewer />
       </div>
     </Container>
