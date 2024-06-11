@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import Footer from "@/components/footer";
 import Head from "next/head";
-import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -79,7 +78,6 @@ export default function RootLayout({
       <Head>
         <link rel="manifest" href="manifest.json" />
       </Head>
-      <Script src="/register.js" />
       <body
         className={cn(inter.className, "h-dvh flex flex-col overflow-auto")}
       >
