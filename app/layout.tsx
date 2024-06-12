@@ -6,8 +6,10 @@ import { Toaster } from "@/components/ui/toaster";
 import Footer from "@/components/footer";
 import Head from "next/head";
 import { Analytics } from "@vercel/analytics/react";
+import GoogleAdsense from "@/components/adsense";
 
 const inter = Inter({ subsets: ["latin"] });
+const adsenseID = process.env.ADSENSE_ID
 
 export const viewport: Viewport = {
   themeColor: "#f2f9f9",
@@ -78,6 +80,9 @@ export default function RootLayout({
       <body
         className={cn(inter.className, "h-dvh flex flex-col overflow-auto")}
       >
+        {
+          adsenseID && <GoogleAdsense pId={adsenseID} />
+        }
         <Analytics />
         <Toaster />
         {children}
