@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import Footer from "@/components/footer";
 import Head from "next/head";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -55,8 +56,7 @@ export const metadata: Metadata = {
     images: ["https://notebeam.vercel.app/images/og-image.png"],
   },
   verification: {
-    google:
-      "AZhmvKCIaJ2mzw8cfkxz1G7mPDUDAv_ljnvWjYrJPxA",
+    google: "AZhmvKCIaJ2mzw8cfkxz1G7mPDUDAv_ljnvWjYrJPxA",
   },
   appleWebApp: {
     capable: true,
@@ -78,6 +78,7 @@ export default function RootLayout({
       <body
         className={cn(inter.className, "h-dvh flex flex-col overflow-auto")}
       >
+        <Analytics />
         <Toaster />
         {children}
         <Footer />
