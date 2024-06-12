@@ -14,13 +14,15 @@ import { Dialog, DialogClose, DialogContent, DialogFooter } from "./ui/dialog";
 import { Button } from "./ui/button";
 import { ScrollArea } from "./ui/scroll-area";
 import { useToast } from "./ui/use-toast";
-import { Link, Loader2, Unlink } from "lucide-react";
+import { Check, Clipboard, Link, Loader2, Unlink } from "lucide-react";
 import useSWR, { mutate } from "swr";
 import { Note } from "@prisma/client";
+import { cn } from "@/lib/utils";
 
 export default function NoteItemViewer() {
   const { toast } = useToast();
 
+  const [isCopied, setIsCopied] = useState(false);
   const [selectedId, setSelectedId] = useAtom(selectedIdAtom);
   const [token, setToken] = useAtom(tokenAtom);
   const [open, setOpen] = useState(false);
@@ -71,6 +73,14 @@ export default function NoteItemViewer() {
     await getAllNotes();
     setSelectedId(null);
     setOpen(false);
+  };
+
+  const handleCopyToClipboard = (value: string) => {
+    navigator.clipboard.writeText(value);
+    setIsCopied(true);
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 1000);
   };
 
   const createShare = async () => {
@@ -130,12 +140,6 @@ export default function NoteItemViewer() {
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="h-full md:h-auto md:max-h-[calc(100%-2rem)] max-w-3xl flex flex-col">
         <div>
-          {currentNoteData?.id === noteTokenFromCloud?.id && (
-            <small className="text-slate-500 flex items-center">
-              <Link className="w-3 h-3 me-2" />
-              {noteTokenFromCloud?.token}
-            </small>
-          )}
           <h2 className="text-xl font-semibold">{currentNoteData?.title}</h2>
         </div>
         <div className="h-full overflow-auto">
@@ -143,27 +147,56 @@ export default function NoteItemViewer() {
             {currentNoteData?.content}
           </ScrollArea>
         </div>
-        <DialogFooter className="flex gap-2 md:flex-row">
-          <Button
-            disabled={isLoadingToken}
-            onClick={() => handleDeleteNote()}
-            variant={"outline"}
-          >
-            Delete
-          </Button>
-          {currentNoteData?.id === noteTokenFromCloud?.id ? (
-            <Button disabled={isLoadingToken} onClick={() => revokeShare()}>
-              {isLoadingToken ? (
-                <Loader2 className="animate-spin w-4 h-4" />
-              ) : (
-                <>
-                  Unshare
-                  <Unlink className="ms-2 w-4 h-4" />
-                </>
-              )}
+        <DialogFooter className="flex gap-2 md:justify-between w-full md:flex-row">
+          <div className="flex"> 
+            <Button
+              className="w-full"
+              disabled={isLoadingToken}
+              onClick={() => handleDeleteNote()}
+              variant={"destructive"}
+            >
+              Delete
             </Button>
+          </div>
+          {currentNoteData?.id === noteTokenFromCloud?.id ? (
+            <div className="flex justify-between items-center gap-4">
+              <Button
+                className="w-full"
+                disabled={isLoadingToken}
+                variant={"outline"}
+                onClick={() => revokeShare()}
+              >
+                {isLoadingToken ? (
+                  <Loader2 className="animate-spin w-4 h-4" />
+                ) : (
+                  <>
+                    Unshare
+                    <Unlink className="ms-2 w-4 h-4" />
+                  </>
+                )}
+              </Button>
+              {currentNoteData?.id === noteTokenFromCloud?.id && (
+                <Button
+                  onClick={() =>
+                    handleCopyToClipboard(noteTokenFromCloud?.token ?? "")
+                  }
+                  className="font-medium w-full flex items-center"
+                >
+                  Share : {noteTokenFromCloud?.token}
+                  {isCopied ? (
+                    <Check className="w-4 h-auto ms-2 transition-all text-green-500" />
+                  ) : (
+                    <Clipboard className="w-4 h-auto ms-2" />
+                  )}
+                </Button>
+              )}
+            </div>
           ) : (
-            <Button disabled={isLoadingToken} onClick={() => createShare()}>
+            <Button
+              className="w-full"
+              disabled={isLoadingToken}
+              onClick={() => createShare()}
+            >
               {isLoadingToken ? (
                 <Loader2 className="animate-spin w-4 h-4" />
               ) : (
