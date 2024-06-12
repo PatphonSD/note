@@ -23,7 +23,7 @@ interface Props {
 export default function EditorComponent(props: Props) {
   const setOpen = props.onOpenChange;
 
-  const [notes, setNotes] = useAtom(notesAtom);
+  const [, setNotes] = useAtom(notesAtom);
 
   const { register, handleSubmit, watch } = useForm<Inputs>();
 
@@ -34,12 +34,11 @@ export default function EditorComponent(props: Props) {
       content: inputData.content,
       updatedAt: new Date(),
     };
-    console.log({ newNote });
     setNotes((prevNote) => {
       if (!prevNote) {
         return [newNote];
       } else {
-        return [...prevNote, newNote];
+        return [newNote, ...prevNote];
       }
     });
     await addNote(newNote);
