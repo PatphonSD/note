@@ -15,7 +15,7 @@ export default function PricacyPage() {
         we collect is divided into two main categories:
       </p>
 
-      <h3>1. Data Stored in IndexedDB (on the User's Device)</h3>
+      <h3>1. Data Stored in IndexedDB (on the User&apos;s Device)</h3>
       <p>
         All notes you create and store are saved in IndexedDB on your device.
         This data is not automatically sent or shared with third parties.
